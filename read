@@ -1,0 +1,43 @@
+Sub read()
+Dim para As Paragraph
+Dim pCount, tNum, num, leftNum As Integer
+Dim Text, mark, pNum, plan As String
+
+mark = "。，、；：？！""'（）…-《》<>·"
+tNum = 0
+pNum = ""
+
+pCount = ActiveDocument.Paragraphs.Count
+
+For Each para In ActiveDocument.Paragraphs
+    Text = para.Range.Text
+    For i = 1 To Len(mark)
+        Text = Replace(Text, Mid(mark, i, 1), "")
+
+    Next i
+    
+    num = Len(Text) - 1
+    tNum = tNum + num
+    pNum = pNum & Str(num) & "/"
+
+
+
+Next para
+
+leftNum = 450 - tNum
+
+If leftNum > 0 Then
+    plan = "尚差"
+Else
+    plan = "多余"
+End If
+
+Selection.EndKey unit:=wdStory
+Selection.InsertAfter Chr(13)
+Selection.InsertAfter Chr(13) & "**********统计**********"
+Selection.InsertAfter Chr(13) & "*共有：" & pCount & "段"
+Selection.InsertAfter Chr(13) & "*每段分别有：" & Left(pNum, Len(pNum) - 1) & "字"
+Selection.InsertAfter Chr(13) & "*共有：" & tNum & "字；" & plan & Abs(leftNum) & "字"
+Selection.InsertAfter Chr(13) & "************************"
+
+End Sub

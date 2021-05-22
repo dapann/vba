@@ -1,0 +1,28 @@
+Sub add_footnote()
+
+Dim n As Integer
+'
+
+    Selection.Font.Color = wdColorRed
+    With Selection
+        With .FootnoteOptions
+            .Location = wdBottomOfPage
+            .NumberingRule = wdRestartContinuous
+            .StartingNumber = 1
+            .NumberStyle = wdNoteNumberStyleArabic
+            .LayoutColumns = 0
+        End With
+        .Footnotes.Add Range:=Selection.Range, Text:=.Text & "："
+    End With
+    
+    Selection.MoveRight unit:=wdWord, Count:=10, Extend:=wdExtend
+    
+    n = Selection.Footnotes(1).Index
+
+    'ActiveDocument.Footnotes(n).Reference.Select
+    ActiveDocument.Footnotes(n).Range.Font.ColorIndex = wdRed
+    ActiveDocument.Footnotes(n).Range.Select
+    Selection.EndKey unit:=wdLine
+    Selection.Font.ColorIndex = wdBlue
+    
+End Sub
